@@ -1,10 +1,20 @@
 function ColorMyPencils(color)
+    print("color my pencils called ".. os.date("%m%d%Y"))
 	color = color or "rose-pine-moon"
-	vim.cmd.colorscheme(color)
+ 	vim.cmd.colorscheme(color)
 
-	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	--vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+	--vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+
+    vim.api.nvim_set_hl(0, "HighlightFoo", { fg = "#00FF00" })
 end
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("HighlightFix", { clear = true }),
+    callback = function()
+        vim.api.nvim_set_hl(0, "HighlightFoo", { fg = "#00FF00" }) -- Green color for Foo
+    end,
+})
 
 return {
 

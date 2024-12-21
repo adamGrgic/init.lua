@@ -50,9 +50,9 @@ autocmd('BufEnter', {
     group = ThePrimeagenGroup,
     callback = function()
         if vim.bo.filetype == "zig" then
-            vim.cmd.colorscheme("tokyonight-night")
+          vim.cmd.colorscheme("tokyonight-night")
         else
-            vim.cmd.colorscheme("rose-pine-moon")
+         --   vim.cmd.colorscheme("rose-pine-moon")
         end
     end
 })
@@ -81,4 +81,41 @@ vim.g.netrw_winsize = 25
 
 vim.opt.runtimepath:append("/mnt/c/repos/SandboxDotJs/FrontEndMasters")
 
+local file_map = {
+  Foo = "/mnt/c/repos/SandboxDotJs/FrontEndMasters/test.txt",
+  Bar = "/path/to/bar.txt",
+  Baz = "/path/to/baz.lua",
+}
+
+local function jump_to_file()
+  print("jump_to_file executed")
+  local word = vim.fn.expand("<cword>") -- Get the word under the cursor
+  local filepath = file_map[word]
+
+  if filepath then
+    print("Opening file: " .. filepath)
+    vim.cmd("edit " .. filepath) -- Open the file
+  else
+    print("No file mapped for: " .. word)
+  end
+end
+
+-- Use vim.keymap.set for simplicity
+vim.keymap.set("n", "<leader>gf", jump_to_file, { noremap = true, silent = true })
+
+-- Define the highlight group
+vim.api.nvim_set_hl(0, "HighlightFoo", { fg = "#00FF00" }) -- Green color
+
+-- Create the autocommand group
+vim.api.nvim_create_augroup("HighlightFoo", { clear = true })
+
+-- Add autocommands for *.txt files
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = "HighlightFoo",
+  pattern = "*.txt",
+  callback = function()
+    vim.cmd("syntax match FooWord /\\<Foo\\>/")
+    vim.cmd("highlight link FooWord HighlightFoo")
+  end,
+})
 
