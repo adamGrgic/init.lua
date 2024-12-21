@@ -30,5 +30,11 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
+
+vim.opt.textwidth = 80
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.opt.colorcolumn = "81"
+
 vim.opt.clipboard:append("unnamedplus")
 vim.cmd("let g:netrw_liststyle = 3")
