@@ -1,0 +1,30 @@
+Todos - List of things I want to do with my neovim environment
+--------------------------------------------------------------
+1. Create plugin for quick notes
+    - open floating terminal
+    - focus, insert mode
+    - jot down a notes
+    - send to location
+    - create custom commands to send notes to custom pre set locations
+
+2. DocTree (too much for this list)
+    - MVP: create easily linkable and configurable text
+        + should spend some time researching telescope and treesitter
+        to see if
+
+** making a secondary note here to make sure you play around with Telescope a
+bit more **
+
+3. Remove Primeagen labels and make your own repo
+    - should be legal I think , I'm not selling it or anything
+
+4. Add background image for terminal
+    - make this configurable
+
+5. Research configuration best practices (managing environment variables)
+
+6. Make terminal colors/background/opacity more configurable
+    - can probably create a script to modify values in the settings.json file
+    - probably create themes and switch between those
+
+7. Add errors to lualine

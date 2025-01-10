@@ -1,5 +1,5 @@
 function ColorMyPencils(color)
-    print("color my pencils called ".. os.date("%m%d%Y"))
+    -- print("color my pencils called ".. os.date("%m%d%Y"))
 	color = color or "rose-pine-moon"
  	vim.cmd.colorscheme(color)
 

@@ -1,0 +1,11 @@
+Nvim Notes
+----------
+Use this space for documenting specific commands / things I find noteworthy
+about nvim
+
+
+Questions
+---------
+
+-
+
