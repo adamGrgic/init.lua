@@ -86,6 +86,13 @@ autocmd('LspAttach', {
 })
 
 
+vim.api.nvim_create_autocmd("CursorHold", {
+    callback = function()
+        vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
+    end,
+})
+
+
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
@@ -260,12 +267,13 @@ vim.keymap.set("n", "<space>th", function()
 
 
     -- Send 'clear' command and press Enter in the terminal
-  vim.api.nvim_chan_send(job_id, "clear; cd ".. current_file_dir..";fmtz\n")
+  vim.api.nvim_chan_send(job_id, "clear; cd ".. current_file_dir..";fmtz;cargo run;\n")
   vim.cmd('setlocal modifiable')
   vim.api.nvim_feedkeys('i', 'n', false)
 
 end)
 
+vim.keymap.set("n", "<space>tf", ":Floaterminal<CR>")
 
 local current_command = ""
 vim.keymap.set("n", "<space>te", function()

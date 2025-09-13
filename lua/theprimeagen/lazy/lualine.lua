@@ -26,7 +26,7 @@ return {
                 return table.concat(parts, '/', len - 2, len)
             end
           },
-          lualine_x = {'encoding', 'fileformat', 'filetype'},
+          lualine_x = {'diagnostics','encoding', 'fileformat', 'filetype'},
           lualine_y = {'progress'},
           lualine_z = {'location'}
         }
