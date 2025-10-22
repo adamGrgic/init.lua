@@ -1,8 +1,12 @@
 return {
     "neovim/nvim-lspconfig",
+    version = "v1.0.0",  -- Pin to last stable version before deprecation
     dependencies = {
         "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
+        {
+            "williamboman/mason-lspconfig.nvim",
+            version = "v1.29.0",
+        },
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
@@ -22,53 +26,70 @@ return {
             vim.lsp.protocol.make_client_capabilities(),
             cmp_lsp.default_capabilities())
 
+        -- Suppress deprecation warnings for nvim-lspconfig
+        vim.g.lspconfig_deprecation_warnings = false
+        
         require("fidget").setup({})
         require("mason").setup()
+        
+        -- Setup mason-lspconfig WITHOUT automatic features to avoid errors
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
                 "rust_analyzer",
                 "gopls",
             },
-            handlers = {
-                function(server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup {
-                        capabilities = capabilities
-                    }
-                end,
+        })
 
-                zls = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.zls.setup({
-                        root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
-                        settings = {
-                            zls = {
-                                enable_inlay_hints = true,
-                                enable_snippets = true,
-                                warn_style = true,
-                            },
-                        },
-                    })
-                    vim.g.zig_fmt_parse_errors = 0
-                    vim.g.zig_fmt_autosave = 0
-
-                end,
-                ["lua_ls"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.lua_ls.setup {
-                        capabilities = capabilities,
-                        settings = {
-                            Lua = {
-                                runtime = { version = "Lua 5.1" },
-                                diagnostics = {
-                                    globals = { "bit", "vim", "it", "describe", "before_each", "after_each" },
-                                }
-                            }
-                        }
+        -- Manually setup LSP servers to avoid mason-lspconfig automatic_enable errors
+        local lspconfig = require("lspconfig")
+        
+        -- Setup rust_analyzer
+        lspconfig.rust_analyzer.setup({
+            capabilities = capabilities,
+            settings = {
+                ['rust-analyzer'] = {
+                    diagnostics = {
+                        enable = true,
                     }
-                end,
+                }
             }
         })
+        
+        -- Setup lua_ls
+        lspconfig.lua_ls.setup({
+            capabilities = capabilities,
+            settings = {
+                Lua = {
+                    runtime = { version = "Lua 5.1" },
+                    diagnostics = {
+                        globals = { "bit", "vim", "it", "describe", "before_each", "after_each" },
+                    }
+                }
+            }
+        })
+        
+        -- Setup gopls
+        lspconfig.gopls.setup({
+            capabilities = capabilities,
+        })
+        
+        -- Setup zls if available
+        if vim.fn.executable("zls") == 1 then
+            lspconfig.zls.setup({
+                capabilities = capabilities,
+                root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
+                settings = {
+                    zls = {
+                        enable_inlay_hints = true,
+                        enable_snippets = true,
+                        warn_style = true,
+                    },
+                },
+            })
+            vim.g.zig_fmt_parse_errors = 0
+            vim.g.zig_fmt_autosave = 0
+        end
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
         cmp.setup({
