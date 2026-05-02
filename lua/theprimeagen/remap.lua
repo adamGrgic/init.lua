@@ -20,7 +20,8 @@ vim.keymap.set("n", "<leader>svwm", function()
     require("vim-with-me").StopVimWithMe()
 end)
 
-vim.keymap.set("n", "<C-s>", "<cmd>:w<cr>")
+-- Save with Ctrl+S (works in normal and insert mode)
+vim.keymap.set({"n", "i"}, "<C-s>", "<cmd>w<cr>", { desc = "Save file", silent = true })
 
 
 -- greatest remap ever

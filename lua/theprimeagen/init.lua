@@ -20,6 +20,15 @@ local ThePrimeagenGroup = augroup('ThePrimeagen', {})
 local autocmd = vim.api.nvim_create_autocmd
 local yank_group = augroup('HighlightYank', {})
 
+-- Disable terminal flow control (XON/XOFF) so Ctrl+S and Ctrl+Q work properly
+-- This prevents the terminal from intercepting Ctrl+S as XOFF which causes view jumping
+autocmd('VimEnter', {
+    group = ThePrimeagenGroup,
+    callback = function()
+        vim.cmd("silent !stty -ixon")
+    end,
+})
+
 function R(name)
     require("plenary.reload").reload_module(name)
 end
