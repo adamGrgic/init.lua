@@ -99,22 +99,6 @@ local function open_bottom_terminal()
   vim.api.nvim_chan_send(job_id, "clear\n")
 end
 
--- Open terminal with custom commands (your existing th function)
-local function open_custom_terminal()
-  local current_file_dir = vim.fn.expand('%:p:h') -- Get the directory of the current file
-
-  vim.cmd.vnew()
-  vim.cmd.term()
-  vim.cmd.wincmd("L")
-
-  local job_id = vim.bo.channel
-
-  -- Send 'clear' command and press Enter in the terminal
-  vim.api.nvim_chan_send(job_id, "clear; cd ".. current_file_dir..";fmtz;cargo run;\n")
-  vim.cmd('setlocal modifiable')
-  vim.api.nvim_feedkeys('i', 'n', false)
-end
-
 -- Setup terminal keybindings
 function M.setup()
   -- Floating terminal
@@ -131,10 +115,7 @@ function M.setup()
   
   -- Bottom terminal
   vim.keymap.set("n", "<space>to", open_bottom_terminal, { desc = "Open terminal at bottom" })
-  
-  -- Custom terminal (your existing th function)
-  vim.keymap.set("n", "<space>th", open_custom_terminal, { desc = "Open custom terminal with commands" })
-  
+
   -- Buffer switching (when terminal is open)
   vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Switch to left buffer" })
   vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Switch to right buffer" })

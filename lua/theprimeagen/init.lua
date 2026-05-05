@@ -25,7 +25,9 @@ local yank_group = augroup('HighlightYank', {})
 autocmd('VimEnter', {
     group = ThePrimeagenGroup,
     callback = function()
-        vim.cmd("silent !stty -ixon")
+        if vim.fn.has("unix") == 1 then
+            vim.cmd("silent !stty -ixon")
+        end
     end,
 })
 
@@ -106,62 +108,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
-
-vim.opt.runtimepath:append("/mnt/c/repos/SandboxDotJs")
-
-local file_map = {
-  Foo = "/mnt/c/repos/SandboxDotJs/FrontEndMasters/test.txt",
-  Bar = "/path/to/bar.txt",
-  Baz = "/path/to/baz.lua",
-}
-
-vim.api.nvim_create_user_command(
-    'DocTree',
-    function(opts)
-        print("Argument: " .. opts.args)
-        if opts.args then
-            -- after confirmed argument, check table for reference
-            vim.cmd("edit /mnt/c/repos/SandboxDotJs/master-index.txt")
-        end
-    end,
-    { nargs = 1 }
-)
-
-
-
-local function jump_to_file()
-  print("jump_to_file executed")
-  local word = vim.fn.expand("<cword>") -- Get the word under the cursor
-  local filepath = file_map[word]
-
-  if filepath then
-    print("Opening file: " .. filepath)
-    vim.cmd("edit " .. filepath) -- Open the file
-  else
-    print("No file mapped for: " .. word)
-  end
-end
-
--- Use vim.keymap.set for simplicity
-vim.keymap.set("n", "<leader>gf", jump_to_file, { noremap = true, silent = true })
-
--- Define the highlight group
-vim.api.nvim_set_hl(0, "HighlightFoo", { fg = "#00FF00" }) -- Green color
-
--- Create the autocommand group
-vim.api.nvim_create_augroup("HighlightFoo", { clear = true })
-
--- Add autocommands for *.txt files
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  group = "HighlightFoo",
-  pattern = "*.txt",
-  callback = function()
-    vim.cmd("syntax match FooWord /\\<Foo\\>/")
-    vim.cmd("highlight link FooWord HighlightFoo")
-  end,
-})
-
-
 
 local toggle_numbers = function()
     vim.opt.relativenumber = false
