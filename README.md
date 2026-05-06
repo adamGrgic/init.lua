@@ -12,6 +12,7 @@ System packages:
 - `make`, a C compiler (`gcc` or `clang`), `cmake`, `unzip` — needed to build telescope-fzf-native, LuaSnip's `jsregexp`, and treesitter parsers
 - `curl` — Mason
 - `node` and `npm` — several LSP servers Mason installs are JS-based
+- `xclip` (X11) and/or `wl-clipboard` (Wayland) — required for `<leader>y` to reach the system clipboard. WSL users don't need these; Neovim auto-uses `clip.exe` from `/mnt/c/Windows/System32` if it's on `PATH`.
 - A [Nerd Font](https://www.nerdfonts.com/) installed and selected in your terminal — for statusline / nvim-tree icons
 
 Neovim 0.9+ recommended.
